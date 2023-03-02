@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        a:link,
+        a:visited {
+          background-color: #3c4f7a;
+          color: white;
+          padding: 15px 25px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
+          border-bottom-right-radius: 10px;
+          border-bottom-left-radius: 10px;
+          margin: 10px; /* add space between the boxes */
+        }
+  
+        a:hover,
+        a:active {
+          background-color:#00ccff;
+        }
+  
+        body {
+          color: #6bd0ff;
+          font-family: "Chivo Mono", sans-serif;
+    background-image: linear-gradient(#1f2123, #41474b);
+  background-attachment: fixed;
+  
+        }
+      </style>
+  <head>
+
+        <li>
+    <title>Traveling Zoo Countdown</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/ico" href="favicon.ico">
+    <style>
+      /* Add your custom styles here */
+      .countdown {
+        font-size: 2em;
+        text-align: center;
+      }
+      .pet-image {
+        max-width: 100px;
+        height: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="countdown">
+      <h1>Traveling Zoo Countdown</h1>
+      <p>The next Legendary Pet at the Traveling Zoo event will be:</p>
+      <p id="legendary"></p>
+      <img class="pet-image" id="pet-image" src="" alt="">
+      <p>Time left until the next Traveling Zoo event:</p>
+      <p id="timer"></p>
+    </div>
+
+    <script>
+        // Define the list of Legendary Pets at the Traveling Zoo event
+        const legendaryPets = [
+          { name: 'Elephant', image: 'assets/elephant.png' },
+          { name: 'Giraffe', image: 'assets/giraffe.png' },
+          { name: 'Blue Whale', image: 'assets/blue-whale.png' },
+          { name: 'Tiger', image: 'assets/tiger.png' },
+          { name: 'Lion', image: 'assets/lion.png' },
+          { name: 'Monkey', image: 'assets/monkey.png' },
+        ];
+      
+        // Set the date and time of the next Traveling Zoo event
+        const eventDate = new Date('2023-03-07T07:55:00Z');
+      
+        // Get the index of the current Legendary Pet based on the current date
+        const currentPetIndex = Math.floor(((Date.now() / 1000) / (60 * 60 * 24 * 5.167)) % legendaryPets.length);
+      
+        // Display the current Legendary Pet and its image
+        const currentPet = legendaryPets[currentPetIndex];
+        document.getElementById('legendary').innerHTML = currentPet.name;
+        document.getElementById('pet-image').src = currentPet.image;
+      
+        // Update the countdown every second
+        const countdown = setInterval(() => {
+          // Get the current date and time
+          const now = new Date().getTime();
+      
+          // Calculate the time remaining until the event
+          const timeRemaining = eventDate - now;
+      
+          // Calculate days, hours, minutes, and seconds remaining
+          const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+      
+          // Display the countdown
+          document.getElementById('timer').innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      
+          // If the countdown is over, display the next Legendary Pet and update the event date
+          if (timeRemaining < 0) {
+            const nextPetIndex = (currentPetIndex + 1) % legendaryPets.length;
+            const nextPet = legendaryPets[nextPetIndex];
+            document.getElementById('legendary').innerHTML = nextPet.name;
+            document.getElementById('pet-image').src = nextPet.image;
+            eventDate.setDate(eventDate.getDate() + 5);
+            clearInterval(countdown);
+            window.location.reload(true);
+          }
+        }, 1000);
+      </script>
+      
